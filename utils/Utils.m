@@ -207,6 +207,22 @@ static id _instance;
 
 @implementation UIView (Additions)
 
+//centraliza a view horizontalmente em relação a view pai
+-(void)centerHorizontal{
+    [self setX:([self.superview widthSize]/2)- ([self widthSize]/2)];
+}
+
+//centraliza a view verticalmente em relação a view pai
+-(void)centerVertical{
+    [self setY:([self.superview height]/2)- ([self height]/2)];
+}
+
+//centraliza a view em relação a view pai
+-(void)centerInSuperview{
+    [self centerHorizontal];
+    [self centerVertical];
+}
+
 -(void)setX:(float)newX{
     CGRect frame = self.frame;
     frame.origin.x = newX;

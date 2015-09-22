@@ -110,6 +110,12 @@ return shared##classname; \
 
 @interface UIView (Additions)
 
+-(void)centerHorizontal;
+
+-(void)centerVertical;
+
+-(void)centerInSuperview;
+
 -(void) setX:(float) newX;
 -(float)x;
 
