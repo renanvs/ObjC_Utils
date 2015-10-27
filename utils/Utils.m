@@ -36,6 +36,25 @@ static id _instance;
     }
 }
 
++(void)openPhone:(NSString*)phone{
+    if ([NSString isStringEmpty:phone]) {
+        return;
+    }
+    
+    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@")" withString:@""];
+    phone = [phone stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSString *URLString = [@"tel://" stringByAppendingString:phone];
+    
+    NSURL *URL = [NSURL URLWithString:URLString];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:URL]) {
+        [[UIApplication sharedApplication] openURL:URL];
+    }
+}
+
 +(BOOL)isValidMail:(NSString*)mail{
     if ([NSString isStringEmpty:mail]) {
         return NO;

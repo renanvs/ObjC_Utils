@@ -80,6 +80,8 @@ return shared##classname; \
 
 +(id)loadNibForName:(NSString*)nibName;
 
++(void)openPhone:(NSString*)phone;
+
 +(float)systemVersion;
 
 +(CGSize)getProportionalSize:(CGSize)size ByWidth:(CGFloat)width;
