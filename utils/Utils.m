@@ -36,6 +36,21 @@ static id _instance;
     }
 }
 
++(BOOL)isValidMail:(NSString*)mail{
+    if ([NSString isStringEmpty:mail]) {
+        return NO;
+    }
+    
+    NSRange rangemail0 = [mail rangeOfString:@"@"];
+    NSRange rangemail1 = [mail rangeOfString:@"."];
+    
+    if (rangemail0.length <= 0 || rangemail1.length <= 0 ) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 +(BOOL)isiPad{
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return YES;
@@ -697,6 +712,44 @@ static id _instance;
         return image;
     }
     return originalImage;
+}
+
++(UIImage *)compressImage:(UIImage *)image{
+    float actualHeight = image.size.height;
+    float actualWidth = image.size.width;
+    float maxHeight = 600.0;
+    float maxWidth = 800.0;
+    float imgRatio = actualWidth/actualHeight;
+    float maxRatio = maxWidth/maxHeight;
+    float compressionQuality = 0.5;//50 percent compression
+    
+    if (actualHeight > maxHeight || actualWidth > maxWidth){
+        if(imgRatio < maxRatio){
+            //adjust width according to maxHeight
+            imgRatio = maxHeight / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = maxHeight;
+        }
+        else if(imgRatio > maxRatio){
+            //adjust height according to maxWidth
+            imgRatio = maxWidth / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = maxWidth;
+        }
+        else{
+            actualHeight = maxHeight;
+            actualWidth = maxWidth;
+        }
+    }
+    
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [image drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    NSData *imageData = UIImageJPEGRepresentation(img, compressionQuality);
+    UIGraphicsEndImageContext();
+    
+    return [UIImage imageWithData:imageData];
 }
 
 @end

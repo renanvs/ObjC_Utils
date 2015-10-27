@@ -70,6 +70,8 @@ return shared##classname; \
 
 +(CGRect) screenBoundsOnCurrentOrientation;
 
++(BOOL)isValidMail:(NSString*)mail;
+
 +(UIInterfaceOrientation)getDeviceOrientation;
 
 +(void)debugAlert:(NSString*)message;
@@ -181,6 +183,7 @@ return shared##classname; \
 +(UIImage *)inverseColor:(UIImage*)originalImage;
 + (UIImage *)image:(UIImage*)img withColor:(UIColor *)color;
 +(UIImage *)imageTintedWithColor:(UIColor *)color WithImage:(UIImage*)originalImage;
++(UIImage *)compressImage:(UIImage *)image;
 
 @end
 
