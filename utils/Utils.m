@@ -24,6 +24,22 @@ static id _instance;
     return _instance;
 }
 
++(UIWindow*)getCurrentWindow{
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+//    if (![NSStringFromClass([keyWindow class]) isEqualToString:@"UIWindow"]) {
+//        // find uiwindow in windows
+//        NSArray *windows = [UIApplication sharedApplication].windows;
+//        for (UIWindow *window in windows) {
+//            if ([NSStringFromClass([window class]) isEqualToString:@"UIWindow"]) {
+//                keyWindow = window;
+//                break;
+//            }
+//        }
+//    }
+    
+    return keyWindow;
+}
+
 +(void)showFonts{
     for (NSString* family in [UIFont familyNames])
     {
@@ -244,6 +260,15 @@ static id _instance;
 //centraliza a view horizontalmente em relação a view pai
 -(void)centerHorizontal{
     [self setX:([self.superview widthSize]/2)- ([self widthSize]/2)];
+}
+
+-(void)centerHorizontalWithSuperView:(UIView*)sv{
+    [self setX:([sv widthSize]/2)- ([self widthSize]/2)];
+}
+
+-(void)centerWithSuperView:(UIView*)sv{
+    [self setX:([sv widthSize]/2)- ([self widthSize]/2)];
+    [self setY:([sv height]/2)- ([self height]/2)];
 }
 
 //centraliza a view verticalmente em relação a view pai

@@ -68,6 +68,8 @@ return shared##classname; \
 
 -(NSString*)getSafeLiteralString:(NSString*)text;
 
++(UIWindow*)getCurrentWindow;
+
 +(CGRect) screenBoundsOnCurrentOrientation;
 
 +(BOOL)isValidMail:(NSString*)mail;
@@ -117,6 +119,10 @@ return shared##classname; \
 -(void)centerHorizontal;
 
 -(void)centerVertical;
+
+-(void)centerHorizontalWithSuperView:(UIView*)sv;
+
+-(void)centerWithSuperView:(UIView*)sv;
 
 -(void)centerInSuperview;
 
