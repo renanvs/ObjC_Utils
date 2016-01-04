@@ -301,21 +301,21 @@ static id _instance;
     return self.frame.origin.y;
 }
 
--(void) setWidth:(float) newWidth{
+-(void) setWidth:(CGFloat) newWidth{
     CGRect frame = self.frame;
     frame.size.width = newWidth;
     self.frame = frame;
 }
--(float)widthSize{
+-(CGFloat)widthSize{
     return self.frame.size.width;
 }
 
--(void) setHeight:(float) newHeight{
+-(void) setHeight:(CGFloat) newHeight{
     CGRect frame = self.frame;
     frame.size.height = newHeight;
     self.frame = frame;
 }
--(float)height{
+-(CGFloat)height{
     return self.frame.size.height;
 }
 
@@ -486,18 +486,19 @@ static id _instance;
             ];  
 }
 
-//+ (NSString*)encodeToBase64:(NSString*)value{
-//    NSData *data = [value dataUsingEncoding:NSUTF8StringEncoding];
-//    //NSString *encoded = [data base64EncodedStringWithOptions:0];
-//    NSString *encoded = [data base64EncodedString];
-//    
-//    return encoded;
-//}
-//+ (NSString*)decodeFromBase64:(NSString*)value;{
-//    NSData *data = [[NSData alloc] initWithBase64EncodedString:value options:0];
-//    NSString *decoded = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//    return decoded;
-//}
++ (NSString*)encodeToBase64:(NSString*)value{
+    NSData *plainData = [value dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64String = [plainData base64EncodedStringWithOptions:0];
+    NSLog(@"%@", base64String);
+    
+    return base64String;
+}
++ (NSString*)decodeFromBase64:(NSString*)value{
+    NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:value options:0];
+    NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", decodedString);
+    return decodedString;
+}
 
 -(NSString*)getCharsQtd:(int)qtd{
     NSString *text = self;

@@ -112,6 +112,9 @@ return shared##classname; \
 +(void)openUrlStringInNativeBrowse:(NSString*)urlSrt;
 -(NSString*)firstLetterToUppercase;
 
++ (NSString*)encodeToBase64:(NSString*)value;
++ (NSString*)decodeFromBase64:(NSString*)value;
+
 @end
 
 @interface UIView (Additions)
@@ -132,11 +135,11 @@ return shared##classname; \
 -(void) setY:(float) newY;
 -(float)y;
 
--(void) setWidth:(float) newWidth;
--(float)widthSize;
+-(void) setWidth:(CGFloat) newWidth;
+-(CGFloat)widthSize;
 
--(void) setHeight:(float) newHeight;
--(float)height;
+-(void) setHeight:(CGFloat) newHeight;
+-(CGFloat)height;
 
 -(void)setSize:(CGSize)newSize;
 
