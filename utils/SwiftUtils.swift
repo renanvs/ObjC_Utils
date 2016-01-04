@@ -36,8 +36,36 @@ class SwiftUtils: NSObject {
         return deviceTokenStr
     }
     
-    
-    class func postSimpleNotification(not : String, object: AnyObject?){
-        NSNotificationCenter.defaultCenter().postNotificationName(not, object: object)
+    class func postSimpleNotification(notification : String, object : AnyObject?){
+        NSNotificationCenter.defaultCenter().postNotificationName(notification, object: object)
+    }
+}
+
+
+extension UIWebView {
+    func disableBounces(){
+        for view in self.subviews{
+            if let v = view as? UIScrollView{
+                v.bounces = false
+            }
+        }
+    }
+}
+
+extension UITableViewCell {
+    func clearColorCellAndContent(){
+        self.clearColor()
+        self.contentView.clearColor()
+    }
+}
+
+extension UITextField {
+    func addLeftPadding(value:Float){
+        let view = UIView(frame: self.frame)
+        view.setX(0)
+        view.setY(0)
+        view.setWidth(CGFloat(value))
+        self.leftView = view
+        self.leftViewMode = .Always
     }
 }
