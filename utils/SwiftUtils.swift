@@ -35,4 +35,9 @@ class SwiftUtils: NSObject {
         deviceTokenStr = deviceTokenStr.uppercaseString
         return deviceTokenStr
     }
+    
+    
+    class func postSimpleNotification(not : String, object: AnyObject?){
+        NSNotificationCenter.defaultCenter().postNotificationName(not, object: object)
+    }
 }
