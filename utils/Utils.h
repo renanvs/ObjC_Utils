@@ -51,6 +51,8 @@ return shared##classname; \
 
 #define isiPhone3_5_inch  ([[UIScreen mainScreen] bounds].size.height == 480)?TRUE:FALSE
 
+#define isiPhone5Model  ([[UIScreen mainScreen] bounds].size.height == 568 && [[UIScreen mainScreen] bounds].size.width == 320)?TRUE:FALSE
+
 #define isiPhone6Model  ([[UIScreen mainScreen] bounds].size.height == 667)?TRUE:FALSE
 
 #define isiPhone6PlusModel  ([[UIScreen mainScreen] bounds].size.height == 736)?TRUE:FALSE
@@ -90,6 +92,7 @@ return shared##classname; \
 +(CGSize)getProportionalSize:(CGSize)size ByHeight:(CGFloat)height;
 
 +(BOOL)IsiPhone3_5_inch;
++(BOOL)IsiPhone5Model;
 +(BOOL)IsiPhone6Model;
 +(BOOL)IsiPhone6PlusModel;
 
@@ -201,6 +204,7 @@ return shared##classname; \
 @interface NSArray (Aditions)
 
 -(NSArray*)justFirstItens:(int)index;
+-(NSArray*)reverseList;
 
 @end
 

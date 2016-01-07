@@ -189,6 +189,10 @@ static id _instance;
     return isiPhone3_5_inch;
 }
 
++(BOOL)IsiPhone5Model{
+    return isiPhone5Model;
+}
+
 +(BOOL)IsiPhone6Model{
     return isiPhone6Model;
 }
@@ -813,6 +817,16 @@ static id _instance;
     }
     
     return listM;
+}
+
+-(NSArray*)reverseList{
+    NSMutableArray *mList = [[NSMutableArray alloc] init];
+    for (int i = self.count-1; i>=0; i--) {
+        id ob = self[i];
+        [mList addObject:ob];
+    }
+    
+    return mList;
 }
 
 @end
