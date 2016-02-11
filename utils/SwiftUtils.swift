@@ -69,3 +69,17 @@ extension UITextField {
         self.leftViewMode = .Always
     }
 }
+
+extension String {
+    static func isEmptyStr(str : String?)->Bool{
+        if let s = str{
+            if let ss = s as String?{
+                if ss.isEmpty == false{
+                    return true
+                }
+            }
+        }
+        
+        return true
+    }
+}

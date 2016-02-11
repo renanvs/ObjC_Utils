@@ -220,6 +220,7 @@ static id _instance;
 }
 
 +(id)loadNibForName:(NSString *)nibName{
+    
     NSArray *list = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
     if (list) {
         return  [list lastObject];
@@ -565,6 +566,10 @@ static id _instance;
 }
 
 + (UIColor *) colorWithHexString: (NSString *) hexString {
+    if([hexString isEqualToString:@""]){
+        return [UIColor clearColor];
+    }
+    
     NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
     CGFloat alpha, red, blue, green;
     switch ([colorString length]) {
