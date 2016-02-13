@@ -41,6 +41,7 @@ class SwiftUtils: NSObject {
     }
 }
 
+#if os(iOS)
 
 extension UIWebView {
     func disableBounces(){
@@ -69,17 +70,39 @@ extension UITextField {
         self.leftViewMode = .Always
     }
 }
+    
+#endif
 
 extension String {
     static func isEmptyStr(str : String?)->Bool{
         if let s = str{
             if let ss = s as String?{
                 if ss.isEmpty == false{
-                    return true
+                    return false
                 }
             }
         }
         
         return true
+    }
+}
+
+extension UIImage{
+    static func localPartialPath(partialPath : String?) -> UIImage?{
+        if partialPath == nil{
+            return nil
+        }
+        
+        let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
+        let destinationPath:NSString = documentsPath.stringByAppendingString(partialPath!)
+
+        let data = NSData(contentsOfFile: destinationPath as String)
+        var image : UIImage?
+        
+        if let d = data {
+            image = UIImage(data: d)
+            return image
+        }
+        return image
     }
 }

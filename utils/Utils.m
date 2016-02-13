@@ -159,6 +159,8 @@ static id _instance;
     
 }
 
+#if TARGET_OS_IOS
+
 //Pega o tamanho da tela na orientação atual
 +(CGRect) screenBoundsOnCurrentOrientation{
     CGRect screenBounds = [UIScreen mainScreen].bounds ;
@@ -185,6 +187,36 @@ static id _instance;
     return interfaceOrientation;
 }
 
++(BOOL)isPortrait{
+    
+    UIInterfaceOrientation interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
+    {
+        return NO;
+    }
+    else if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
+    {
+        return YES;
+    }
+    return NO;
+}
+
++(CGRect)keyboardRectWithNotification:(NSNotification*)notification{
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    CGRect screenSize = screenBounds();
+    CGFloat screenHeight = screenSize.size.height;
+    
+    keyboardFrameBeginRect.origin.y = screenHeight - keyboardFrameBeginRect.size.height;
+    
+    return keyboardFrameBeginRect;
+}
+
+#endif
+
 +(BOOL)IsiPhone3_5_inch{
     return isiPhone3_5_inch;
 }
@@ -201,24 +233,6 @@ static id _instance;
     return isiPhone6PlusModel;
 }
 
-//Chama um alert com a mensagem passada
-+(void)debugAlert:(NSString*)message{
-    [[[UIAlertView alloc] initWithTitle:@"Debug" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil]show];
-}
-
-+(CGRect)keyboardRectWithNotification:(NSNotification*)notification{
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    
-    CGRect screenSize = screenBounds();
-    CGFloat screenHeight = screenSize.size.height;
-    
-    keyboardFrameBeginRect.origin.y = screenHeight - keyboardFrameBeginRect.size.height;
-    
-    return keyboardFrameBeginRect;
-}
-
 +(id)loadNibForName:(NSString *)nibName{
     
     NSArray *list = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
@@ -231,21 +245,6 @@ static id _instance;
 
 +(float)systemVersion{
     return [[[UIDevice currentDevice] systemVersion] floatValue];
-}
-
-+(BOOL)isPortrait{
-    
-    UIInterfaceOrientation interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    
-    if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
-    {
-        return NO;
-    }
-    else if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
-    {
-        return YES;
-    }
-    return NO;
 }
 
 +(CGSize)getProportionalSize:(CGSize)size ByHeight:(CGFloat)height{
@@ -616,6 +615,8 @@ static id _instance;
 
 @implementation UILabel (Aditions)
 
+#if TARGET_OS_IOS
+
 -(CGSize)sizeOfMultiLineLabel{
     
     NSAssert(self, @"UILabel was nil");
@@ -662,6 +663,9 @@ static id _instance;
     CGSize size = [self sizeOfMultiLineLabel];
     [self setHeight:size.height];
 }
+
+
+#endif
 
 @end
 
@@ -846,6 +850,8 @@ static id _instance;
 
 @end
 
+#if TARGET_OS_IOS
+
 @implementation UIWebView (Aditions)
 
 -(void)loadRequestString:(NSString *)requestStr{
@@ -853,3 +859,5 @@ static id _instance;
 }
 
 @end
+
+#endif

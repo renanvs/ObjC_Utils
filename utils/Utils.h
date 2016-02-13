@@ -72,15 +72,17 @@ return shared##classname; \
 
 +(UIWindow*)getCurrentWindow;
 
-+(CGRect) screenBoundsOnCurrentOrientation;
-
 +(BOOL)isValidMail:(NSString*)mail;
+
+#if TARGET_OS_IOS
 
 +(UIInterfaceOrientation)getDeviceOrientation;
 
-+(void)debugAlert:(NSString*)message;
++(CGRect) screenBoundsOnCurrentOrientation;
 
 +(CGRect)keyboardRectWithNotification:(NSNotification*)notification;
+
+#endif
 
 +(id)loadNibForName:(NSString*)nibName;
 
@@ -168,9 +170,13 @@ return shared##classname; \
 
 @interface UILabel (Aditions)
 
+#if TARGET_OS_IOS
+
 -(CGSize)sizeOfMultiLineLabel;
 
 -(void)multiLineLabelAdjust;
+
+#endif
 
 @end
 
@@ -195,7 +201,6 @@ return shared##classname; \
 @interface UIImage (Aditions)
 
 +(UIImage *)inverseColor:(UIImage*)originalImage;
-+ (UIImage *)image:(UIImage*)img withColor:(UIColor *)color;
 +(UIImage *)imageTintedWithColor:(UIColor *)color WithImage:(UIImage*)originalImage;
 +(UIImage *)compressImage:(UIImage *)image;
 
