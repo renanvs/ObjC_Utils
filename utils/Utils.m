@@ -335,16 +335,16 @@ static id _instance;
     }
 }
 
--(UIView *)viewWithUniqueTag:(NSInteger)tag{
-    for (UIView *view in self.subviews) {
-        NSInteger tagF = view.tag;
-        if (tagF == tag) {
-            return view;
-        }
-    }
-    
-    return [self viewWithTag:tag];
-}
+//-(UIView *)viewWithUniqueTag:(NSInteger)tag{
+//    for (UIView *view in self.subviews) {
+//        NSInteger tagF = view.tag;
+//        if (tagF == tag) {
+//            return view;
+//        }
+//    }
+//    
+//    return [self viewWithTag:tag];
+//}
 
 -(void)clearColor{
     self.backgroundColor = [UIColor clearColor];

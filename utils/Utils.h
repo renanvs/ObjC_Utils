@@ -150,7 +150,7 @@ return shared##classname; \
 
 -(void)removeSubviews;
 
--(UIView *)viewWithUniqueTag:(NSInteger)tag;
+//-(UIView *)viewWithUniqueTag:(NSInteger)tag;
 
 -(void)clearColor;
 

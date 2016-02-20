@@ -106,3 +106,15 @@ extension UIImage{
         return image
     }
 }
+
+extension UIView{
+    func viewWithUniqueTag(tagD : Int)->UIView?{
+        for v in self.subviews{
+            if v.tag == tagD{
+                return v;
+            }
+        }
+        
+        return self.viewWithTag(tagD)
+    }
+}
