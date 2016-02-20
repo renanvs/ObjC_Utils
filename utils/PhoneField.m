@@ -232,6 +232,9 @@
         text = [text removeSpecialChars];
         [self formatNumToPhone:text];
         [self analyzeCurrentString];
+        if ([text isEqualToString:@""]){
+            stringInside = @"";
+        }
         [super setText:stringInside];
     }else{
         inside = NO;
