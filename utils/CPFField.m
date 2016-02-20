@@ -24,6 +24,17 @@
     return YES;
 }
 
+-(void)didMoveToSuperview{
+    [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(adjustCPF) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(adjustCPF) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(adjustCPF) userInfo:nil repeats:NO];
+}
+
+-(void)setText:(NSString *)text{
+    [super setText:text];
+    [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(adjustCPF) userInfo:nil repeats:NO];
+}
+
 -(BOOL)isValidCpf{
     if ([NSString isStringEmpty:self.text]) {
         return NO;
@@ -39,6 +50,16 @@
         return YES;
     }
     return NO;
+}
+
+-(void)adjustCPF{
+    if (self.text.length == 11) {
+        NSMutableString *currentText = [NSMutableString stringWithString:self.text];
+        [currentText insertString:@"-" atIndex:currentText.length-2];
+        [currentText insertString:@"." atIndex:currentText.length-6];
+        [currentText insertString:@"." atIndex:currentText.length-10];
+        self.text = currentText;
+    }
 }
 
 -(BOOL)formatCpfTextField:(UITextField*)textField Range:(NSRange)range String:(NSString*)string{
