@@ -118,3 +118,13 @@ extension UIView{
         return self.viewWithTag(tagD)
     }
 }
+
+extension UIViewController{
+    func removeAllNotificationObservers(){
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func addSimpleObserver(name : String, selectorName : String){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector(selectorName), name: name, object: nil)
+    }
+}
