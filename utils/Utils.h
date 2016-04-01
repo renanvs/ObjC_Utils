@@ -72,6 +72,8 @@ return shared##classname; \
 
 +(UIWindow*)getCurrentWindow;
 
++(UIViewController*)getRootController;
+
 +(BOOL)isValidMail:(NSString*)mail;
 
 #if TARGET_OS_IOS

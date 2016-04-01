@@ -40,6 +40,10 @@ static id _instance;
     return keyWindow;
 }
 
++(UIViewController*)getRootController{
+    return [[self getCurrentWindow] rootViewController];
+}
+
 +(void)showFonts{
     for (NSString* family in [UIFont familyNames])
     {

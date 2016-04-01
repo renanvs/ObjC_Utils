@@ -39,6 +39,18 @@ class SwiftUtils: NSObject {
     class func postSimpleNotification(notification : String, object : AnyObject?){
         NSNotificationCenter.defaultCenter().postNotificationName(notification, object: object)
     }
+    
+    class func addSimpleNotification(object : AnyObject, selector : Selector, name : String){
+        NSNotificationCenter.defaultCenter().addObserver(object, selector: selector, name: name, object: nil)
+    }
+    
+    class func classNameAsString(obj: Any) -> String {
+        //prints more readable results for dictionaries, arrays, Int, etc
+        
+        //return String(obj.dynamicType).componentsSeparatedByString("__").last!
+        let name = String(obj.dynamicType)
+        return name
+    }
 }
 
 #if os(iOS)
@@ -58,6 +70,10 @@ extension UITableViewCell {
         self.clearColor()
         self.contentView.clearColor()
     }
+    
+    func setStyleToNone(){
+        self.selectionStyle = UITableViewCellSelectionStyle.None
+    }
 }
 
 extension UITextField {
@@ -68,6 +84,20 @@ extension UITextField {
         view.setWidth(CGFloat(value))
         self.leftView = view
         self.leftViewMode = .Always
+    }
+    
+    func setPlaceHolderColor(color : UIColor){
+        if self.placeholder != nil{
+            self.attributedPlaceholder = NSAttributedString(string: self.placeholder!, attributes: [NSForegroundColorAttributeName: color])
+        }
+    }
+    
+    func safeText() -> String{
+        if String.isEmptyStr(self.text){
+            return ""
+        }
+        
+        return self.text!
     }
 }
     
@@ -84,6 +114,18 @@ extension String {
         }
         
         return true
+    }
+    
+    func integerValue() -> Int{
+        return (self as NSString).integerValue
+    }
+    
+    func intValue() -> Int32{
+        return (self as NSString).intValue
+    }
+    
+    func floatValue() -> Float{
+        return (self as NSString).floatValue
     }
 }
 
@@ -128,3 +170,12 @@ extension UIViewController{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector(selectorName), name: name, object: nil)
     }
 }
+
+extension UIButton{
+    func setImageByNameInNormalState(imageName : String){
+        let image = UIImage(named:imageName)
+        self.setImage(image, forState: .Normal)
+    }
+}
+
+
