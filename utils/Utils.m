@@ -668,6 +668,23 @@ static id _instance;
     [self setHeight:size.height];
 }
 
+- (void)setWidthOfLabel {
+    UILabel* label = self;
+    
+    //get the height of label content
+    CGFloat width = [label.text sizeWithFont:label.font constrainedToSize:CGSizeMake(99999, label.bounds.size.height) lineBreakMode:NSLineBreakByWordWrapping].width;
+    //set the frame according to calculated height
+    CGRect frame = label.frame;
+    if([label.text length] > 0) {
+        
+        frame.size.width = width+5;
+    }
+    else {
+        frame.size.width = 0;
+    }
+    label.frame = frame;
+}
+
 
 #endif
 

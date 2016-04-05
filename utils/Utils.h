@@ -178,6 +178,8 @@ return shared##classname; \
 
 -(void)multiLineLabelAdjust;
 
+- (void)setWidthOfLabel;
+
 #endif
 
 @end
