@@ -730,6 +730,8 @@ static id _instance;
         }else{
             return @"";
         }
+    }else{
+        NSLog(@"key string invalid: %@", string);
     }
     return @"";
 }
@@ -738,6 +740,8 @@ static id _instance;
     id obj = [self objectForKey:string];
     if ([obj isKindOfClass:[NSNumber class]]) {
         return (NSNumber*)obj;
+    }else{
+        NSLog(@"key number invalid: %@", string);
     }
     return @0;
 }
