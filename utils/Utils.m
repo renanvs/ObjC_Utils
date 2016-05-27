@@ -339,6 +339,11 @@ static id _instance;
     }
 }
 
+-(void)setXYToZero{
+    [self setX:0];
+    [self setY:0];
+}
+
 //-(UIView *)viewWithUniqueTag:(NSInteger)tag{
 //    for (UIView *view in self.subviews) {
 //        NSInteger tagF = view.tag;

@@ -152,6 +152,8 @@ return shared##classname; \
 
 -(void)removeSubviews;
 
+-(void)setXYToZero;
+
 //-(UIView *)viewWithUniqueTag:(NSInteger)tag;
 
 -(void)clearColor;

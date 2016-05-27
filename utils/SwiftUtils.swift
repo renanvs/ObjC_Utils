@@ -51,6 +51,14 @@ class SwiftUtils: NSObject {
         let name = String(obj.dynamicType)
         return name
     }
+    
+    class func getDayOfWeek(date:NSDate)->Int {
+        let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+        let myComponents = myCalendar.components(.Weekday, fromDate: date)
+        let weekDay = myComponents.weekday
+        
+        return weekDay
+    }
 }
 
 #if os(iOS)
@@ -77,6 +85,7 @@ extension UITableViewCell {
 }
 
 extension UITextField {
+    
     func addLeftPadding(value:Float){
         let view = UIView(frame: self.frame)
         view.setX(0)
