@@ -136,6 +136,10 @@ extension String {
     func floatValue() -> Float{
         return (self as NSString).floatValue
     }
+    
+    func NSStringDescription() -> NSString{
+        return self as NSString
+    }
 }
 
 extension UIImage{
@@ -187,4 +191,42 @@ extension UIButton{
     }
 }
 
+extension NSMutableDictionary{
+    func setSafeString(value : String?, forKey: String){
+        if String.isEmptyStr(value){
+            print("Key empty: \(forKey)")
+            self.setObject("", forKey: forKey)
+        }else{
+            self.setObject(value!, forKey: forKey)
+        }
+    }
+    
+    func setSafeNumber(value : NSNumber?, forKey: String){
+        if value == nil{
+            print("Key empty: \(forKey)")
+            self.setObject(NSNumber(int:0), forKey: forKey)
+        }else{
+            self.setObject(value!, forKey: forKey)
+        }
+    }
+}
+
+extension NSDictionary{
+    func JSON_String()-> String?{
+        do {
+            if let postData : NSData = try NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions.PrettyPrinted){
+                
+                let json = NSString(data: postData, encoding: NSUTF8StringEncoding)! as String
+                return json
+            }
+            
+            
+        }
+        catch {
+            return nil
+        }
+        
+        return nil
+    }
+}
 
