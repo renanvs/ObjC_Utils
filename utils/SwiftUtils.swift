@@ -194,7 +194,6 @@ extension UIButton{
 extension NSMutableDictionary{
     func setSafeString(value : String?, forKey: String){
         if String.isEmptyStr(value){
-            print("Key empty: \(forKey)")
             self.setObject("", forKey: forKey)
         }else{
             self.setObject(value!, forKey: forKey)
@@ -203,7 +202,6 @@ extension NSMutableDictionary{
     
     func setSafeNumber(value : NSNumber?, forKey: String){
         if value == nil{
-            print("Key empty: \(forKey)")
             self.setObject(NSNumber(int:0), forKey: forKey)
         }else{
             self.setObject(value!, forKey: forKey)
