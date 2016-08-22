@@ -23,6 +23,11 @@ func ~> (
 }
 
 class SwiftUtils: NSObject {
+    
+    static var isSimulator: Bool {
+        return TARGET_OS_SIMULATOR != 0 // Use this line in Xcode 7 or newer
+        //return TARGET_IPHONE_SIMULATOR != 0 // Use this line in Xcode 6
+    }
 
     class func convertDeviceTokenToString(deviceToken:NSData) -> String {
         //  Convert binary Device Token to a String (and remove the <,> and white space charaters).
@@ -71,6 +76,13 @@ extension UIWebView {
             }
         }
     }
+}
+
+extension UIScrollView{
+        func scrollToTop() {
+            let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
+            setContentOffset(desiredOffset, animated: true)
+        }
 }
 
 extension UITableViewCell {

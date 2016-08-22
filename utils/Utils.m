@@ -40,6 +40,40 @@ static id _instance;
     return keyWindow;
 }
 
++(UIViewController *) findTopController {
+//    UIWindow *topWindow = [[UIApplication sharedApplication] keyWindow];
+//    
+//    //if (topWindow.windowLevel != UIWindowLevelNormal) {
+//        NSArray *windows = [[UIApplication sharedApplication] windows];
+//        
+//        for(topWindow in windows) {
+//            if (topWindow.windowLevel == UIWindowLevelNormal) {
+//                break;
+//            }
+//        }
+//    //}
+//    
+//    UIView *rootView = nil;
+//    
+//    if ([[topWindow subviews] count] != 0){
+//        rootView = [[topWindow subviews] objectAtIndex:0];
+//    }
+//    
+//    id nextResponder = [rootView nextResponder];
+//    
+//    return [nextResponder isKindOfClass:[UIViewController class]]
+//    ? nextResponder
+//    : nil;
+    
+    
+    UIViewController *topController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    while([topController presentedViewController] != nil){
+        topController = [topController presentedViewController];
+    }
+    
+    return topController;
+}
+
 +(UIViewController*)getRootController{
     return [[self getCurrentWindow] rootViewController];
 }
@@ -298,6 +332,22 @@ static id _instance;
 
 -(float)x{
     return self.frame.origin.x;
+}
+
+-(void) setX_CG:(CGFloat) newX{
+    [self setX:newX];
+}
+
+-(CGFloat)x_CG{
+    return [self x];
+}
+
+-(void) setY_CG:(CGFloat) newY{
+    [self setY:newY];
+}
+
+-(CGFloat)y_CG{
+    return [self y];
 }
 
 -(void) setY:(float) newY{

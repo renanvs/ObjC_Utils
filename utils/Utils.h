@@ -72,6 +72,8 @@ return shared##classname; \
 
 +(UIWindow*)getCurrentWindow;
 
++(UIViewController *) findTopController;
+
 +(UIViewController*)getRootController;
 
 +(BOOL)isValidMail:(NSString*)mail;
@@ -137,10 +139,13 @@ return shared##classname; \
 -(void)centerInSuperview;
 
 -(void) setX:(float) newX;
+-(void) setX_CG:(CGFloat) newX;
 -(float)x;
+-(CGFloat)x_CG;
 
 -(void) setY:(float) newY;
--(float)y;
+-(void) setY_CG:(CGFloat) newY;
+-(CGFloat)y_CG;
 
 -(void) setWidth:(CGFloat) newWidth;
 -(CGFloat)widthSize;
