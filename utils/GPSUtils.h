@@ -25,4 +25,6 @@ typedef enum {
 +(BOOL)canUseGoogleMaps;
 +(BOOL)canUseWaze;
 
++(NSArray*)getListPossibleGPSNavigationType;
+
 @end

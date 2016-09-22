@@ -9,18 +9,26 @@
 import UIKit
 import Foundation
 
-infix operator ~>{}
+infix operator ~>
+prefix operator ~>>
 
-private let queue = dispatch_queue_create("serial-worker", DISPATCH_QUEUE_SERIAL)
+private let queue = DispatchQueue(label: "serial-worker", attributes: [])
 
 func ~> (
-    backgroundClosure:  () -> (),
-    mainClosure:        () -> ()){
-        dispatch_async(queue) { () -> Void in
+    backgroundClosure:  @escaping () -> (),
+    mainClosure:        @escaping () -> ()){
+        queue.async { () -> Void in
             backgroundClosure()
-            dispatch_async(dispatch_get_main_queue(), mainClosure)
+            DispatchQueue.main.async(execute: mainClosure)
         }
 }
+
+
+prefix func ~>> (mainClosure: @escaping () -> ()){
+    DispatchQueue.main.async(execute: mainClosure)
+}
+
+
 
 class SwiftUtils: NSObject {
     
@@ -29,40 +37,40 @@ class SwiftUtils: NSObject {
         //return TARGET_IPHONE_SIMULATOR != 0 // Use this line in Xcode 6
     }
 
-    class func convertDeviceTokenToString(deviceToken:NSData) -> String {
+    class func convertDeviceTokenToString(_ deviceToken:Data) -> String {
         //  Convert binary Device Token to a String (and remove the <,> and white space charaters).
-        var deviceTokenStr = deviceToken.description.stringByReplacingOccurrencesOfString(">", withString: "")
-        deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString("<", withString: "")
-        deviceTokenStr = deviceTokenStr.stringByReplacingOccurrencesOfString(" ", withString: "")
+        var deviceTokenStr = deviceToken.description.replacingOccurrences(of: ">", with: "")
+        deviceTokenStr = deviceTokenStr.replacingOccurrences(of: "<", with: "")
+        deviceTokenStr = deviceTokenStr.replacingOccurrences(of: " ", with: "")
         
         // Our API returns token in all uppercase, regardless how it was originally sent.
         // To make the two consistent, I am uppercasing the token string here.
-        deviceTokenStr = deviceTokenStr.uppercaseString
+        deviceTokenStr = deviceTokenStr.uppercased()
         return deviceTokenStr
     }
     
-    class func postSimpleNotification(notification : String, object : AnyObject?){
-        NSNotificationCenter.defaultCenter().postNotificationName(notification, object: object)
+    class func postSimpleNotification(_ notification : String, object : AnyObject?){
+        NotificationCenter.default.post(name: Notification.Name(rawValue: notification), object: object)
     }
     
-    class func addSimpleNotification(object : AnyObject, selector : Selector, name : String){
-        NSNotificationCenter.defaultCenter().addObserver(object, selector: selector, name: name, object: nil)
+    class func addSimpleNotification(_ object : AnyObject, selector : Selector, name : String){
+        NotificationCenter.default.addObserver(object, selector: selector, name: NSNotification.Name(rawValue: name), object: nil)
     }
     
-    class func classNameAsString(obj: Any) -> String {
+    class func classNameAsString(_ obj: Any) -> String {
         //prints more readable results for dictionaries, arrays, Int, etc
         
         //return String(obj.dynamicType).componentsSeparatedByString("__").last!
-        let name = String(obj.dynamicType)
+        let name = String(describing: type(of: (obj) as AnyObject))
         return name
     }
     
-    class func getDayOfWeek(date:NSDate)->Int {
-        let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let myComponents = myCalendar.components(.Weekday, fromDate: date)
+    class func getDayOfWeek(_ date:Date)->Int {
+        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let myComponents = (myCalendar as NSCalendar).components(.weekday, from: date)
         let weekDay = myComponents.weekday
         
-        return weekDay
+        return weekDay!
     }
 }
 
@@ -92,22 +100,22 @@ extension UITableViewCell {
     }
     
     func setStyleToNone(){
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.selectionStyle = UITableViewCellSelectionStyle.none
     }
 }
 
 extension UITextField {
     
-    func addLeftPadding(value:Float){
+    func addLeftPadding(_ value:Float){
         let view = UIView(frame: self.frame)
         view.setX(0)
         view.setY(0)
         view.setWidth(CGFloat(value))
         self.leftView = view
-        self.leftViewMode = .Always
+        self.leftViewMode = .always
     }
     
-    func setPlaceHolderColor(color : UIColor){
+    func setPlaceHolderColor(_ color : UIColor){
         if self.placeholder != nil{
             self.attributedPlaceholder = NSAttributedString(string: self.placeholder!, attributes: [NSForegroundColorAttributeName: color])
         }
@@ -125,7 +133,7 @@ extension UITextField {
 #endif
 
 extension String {
-    static func isEmptyStr(str : String?)->Bool{
+    static func isEmptyStr(_ str : String?)->Bool{
         if let s = str{
             if let ss = s as String?{
                 if ss.isEmpty == false{
@@ -155,15 +163,15 @@ extension String {
 }
 
 extension UIImage{
-    static func localPartialPath(partialPath : String?) -> UIImage?{
+    static func localPartialPath(_ partialPath : String?) -> UIImage?{
         if partialPath == nil{
             return nil
         }
         
-        let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
-        let destinationPath:NSString = documentsPath.stringByAppendingString(partialPath!)
+        let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask,true)[0] as AnyObject
+        let destinationPath = documentsPath.appending(partialPath!)
 
-        let data = NSData(contentsOfFile: destinationPath as String)
+        let data = try? Data(contentsOf: URL(fileURLWithPath: destinationPath as String))
         var image : UIImage?
         
         if let d = data {
@@ -175,7 +183,7 @@ extension UIImage{
 }
 
 extension UIView{
-    func viewWithUniqueTag(tagD : Int)->UIView?{
+    func viewWithUniqueTag(_ tagD : Int)->UIView?{
         for v in self.subviews{
             if v.tag == tagD{
                 return v;
@@ -184,59 +192,114 @@ extension UIView{
         
         return self.viewWithTag(tagD)
     }
+    
+    func removeLayerWithName(name : String){
+        if self.layer.sublayers != nil{
+            for l in self.layer.sublayers!{
+                if l.name != nil && l.name == name{
+                    l.removeFromSuperlayer()
+                }
+            }
+        }
+    }
+    
+    func addTopBorder(){
+        
+        self.removeLayerWithName(name: "top")
+        
+        let borderTest = CALayer()
+        borderTest.name = "top"
+        borderTest.backgroundColor = UIColor.black.cgColor
+        borderTest.frame = CGRect(x: 0, y: 0, width: self.widthSize(), height: 1)
+        self.layer.addSublayer(borderTest)
+    }
+    
+    func addBottonBorder(){
+        
+        self.removeLayerWithName(name: "botton")
+        
+        let borderTest = CALayer()
+        borderTest.name = "botton"
+        borderTest.backgroundColor = UIColor.black.cgColor
+        borderTest.frame = CGRect(x: 0, y: self.height() - 1, width: self.widthSize(), height: 1)
+        self.layer.addSublayer(borderTest)
+    }
+    
+    func addLeftBorder(){
+        
+        self.removeLayerWithName(name: "left")
+        
+        let borderTest = CALayer()
+        borderTest.name = "left"
+        borderTest.backgroundColor = UIColor.black.cgColor
+        borderTest.frame = CGRect(x: 0, y: 0, width: 1, height: self.height())
+        self.layer.addSublayer(borderTest)
+    }
+    
+    func addRightBorder(){
+        
+        self.removeLayerWithName(name: "right")
+        
+        let borderTest = CALayer()
+        borderTest.name = "right"
+        borderTest.backgroundColor = UIColor.black.cgColor
+        borderTest.frame = CGRect(x: self.widthSize() - 1, y: 0, width: 1, height: self.height())
+        self.layer.addSublayer(borderTest)
+    }
 }
 
 extension UIViewController{
     func removeAllNotificationObservers(){
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    func addSimpleObserver(name : String, selectorName : String){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector(selectorName), name: name, object: nil)
+    func addSimpleObserver(_ name : String, selectorName : String){
+        NotificationCenter.default.addObserver(self, selector: Selector(selectorName), name: NSNotification.Name(rawValue: name), object: nil)
+    }
+    
+    func presentDefault(_ vc : UIViewController){
+        self.present(vc, animated: true, completion: nil)
     }
 }
 
 extension UIButton{
-    func setImageByNameInNormalState(imageName : String){
+    func setImageByNameInNormalState(_ imageName : String){
         let image = UIImage(named:imageName)
-        self.setImage(image, forState: .Normal)
+        self.setImage(image, for: UIControlState())
     }
 }
 
 extension NSMutableDictionary{
-    func setSafeString(value : String?, forKey: String){
+    func setSafeString(_ value : String?, forKey: String){
         if String.isEmptyStr(value){
-            self.setObject("", forKey: forKey)
+            self.setObject("", forKey: forKey as NSCopying)
         }else{
-            self.setObject(value!, forKey: forKey)
+            self.setObject(value!, forKey: forKey as NSCopying)
         }
     }
     
-    func setSafeNumber(value : NSNumber?, forKey: String){
+    func setSafeNumber(_ value : NSNumber?, forKey: String){
         if value == nil{
-            self.setObject(NSNumber(int:0), forKey: forKey)
+            self.setObject(NSNumber(value: 0 as Int32), forKey: forKey as NSCopying)
         }else{
-            self.setObject(value!, forKey: forKey)
+            self.setObject(value!, forKey: forKey as NSCopying)
         }
     }
 }
 
 extension NSDictionary{
+    
     func JSON_String()-> String?{
-        do {
-            if let postData : NSData = try NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions.PrettyPrinted){
-                
-                let json = NSString(data: postData, encoding: NSUTF8StringEncoding)! as String
-                return json
-            }
+        do{
+            let data = try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions.prettyPrinted)
             
-            
-        }
-        catch {
+            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)! as String
+            return json
+
+        }catch{
             return nil
         }
         
-        return nil
     }
 }
 

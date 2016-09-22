@@ -801,6 +801,17 @@ static id _instance;
     return @0;
 }
 
+-(NSArray*)safeArrayForKey:(NSString*)key{
+    id obj = [self objectForKey:key];
+    if ([obj isKindOfClass:[NSArray class]]) {
+        return (NSArray*)obj;
+    }else{
+        NSLog(@"key array invalid: %@", key);
+    }
+    return [[NSArray alloc] init];
+    
+}
+
 @end
 
 

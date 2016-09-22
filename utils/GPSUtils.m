@@ -59,6 +59,23 @@
     return gpsList;
 }
 
++(NSArray*)getListPossibleGPSNavigationType{
+    NSMutableArray *gpsList = [[NSMutableArray alloc] init];
+    
+    if ([self canUseAppleMaps]) {
+        [gpsList addObject:[NSNumber numberWithInt:NavigationTypeAppleMaps]];
+    }
+    
+    if ([self canUseWaze]) {
+        [gpsList addObject:[NSNumber numberWithInt:NavigationTypeWaze]];
+    }
+    
+    if ([self canUseGoogleMaps]){
+        [gpsList addObject:[NSNumber numberWithInt:NavigationTypeGoogleMaps]];
+    }
+    return gpsList;
+}
+
 +(void)navigateWithLatitude:(float)latitude AndLongitude:(float)longitude WithNavigationType:(NavigationType)navigationType{
     
     if (navigationType == NavigationTypeAppleMaps) {

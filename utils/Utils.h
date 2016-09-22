@@ -206,6 +206,7 @@ return shared##classname; \
 
 -(NSString*)safeStringForKey:(NSString*)string;
 -(NSNumber*)safeNumberForKey:(NSString*)string;
+-(NSArray*)safeArrayForKey:(NSString*)key;
 
 @end
 
